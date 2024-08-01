@@ -1,16 +1,15 @@
-// import 'package:brew_crew/screen/authenticate/authenticate.dart';
-import 'package:brew_crew/services/auth.dart';
 import 'package:flutter/material.dart';
+import 'package:brew_crew/services/auth.dart';
 
-class SignIn extends StatefulWidget {
-  const SignIn({required this.toogleview, super.key});
+class Register extends StatefulWidget {
+  const Register({required this.toogleview, super.key});
   final Function() toogleview;
 
   @override
-  State<SignIn> createState() => _SignInState();
+  State<Register> createState() => _RegisterState();
 }
 
-class _SignInState extends State<SignIn> {
+class _RegisterState extends State<Register> {
   final AuthServices _auth = AuthServices();
   String _email = "";
   String _pass = " ";
@@ -18,14 +17,12 @@ class _SignInState extends State<SignIn> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Sign In to Brew Crew"),
+        title: Text("Sign up to Brew Crew"),
         backgroundColor: Colors.brown[400],
         elevation: 0.0,
         actions: [
           ElevatedButton.icon(
-            onPressed: () {
-              widget.toogleview();
-            },
+            onPressed: () {},
             label: Text("Sign in"),
             icon: Icon(Icons.person),
           )
@@ -73,7 +70,7 @@ class _SignInState extends State<SignIn> {
               ElevatedButton(
                 onPressed: () {},
                 child: const Text(
-                  "Sign in",
+                  "Register",
                   style: TextStyle(color: Colors.yellow),
                 ),
               )

@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
-  final AuthServices _auth = AuthServices();
 
   @override
   Widget build(BuildContext context) {
+    final AuthServices _auth = AuthServices();
     return Scaffold(
       backgroundColor: Colors.brown[500],
       appBar: AppBar(

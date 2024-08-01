@@ -33,4 +33,13 @@ class AuthServices {
   //register a new user
 
   //sign out
+
+  Future signOut() async {
+    try {
+      return _auth.signOut();
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
 }

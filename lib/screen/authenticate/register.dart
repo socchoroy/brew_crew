@@ -1,3 +1,4 @@
+import 'package:brew_crew/shared/constent_value.dart';
 import 'package:flutter/material.dart';
 import 'package:brew_crew/services/auth.dart';
 
@@ -11,8 +12,10 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
   final AuthServices _auth = AuthServices();
+  final _formKey = GlobalKey<FormState>();
   String _email = "";
   String _pass = " ";
+  String error = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,13 +25,16 @@ class _RegisterState extends State<Register> {
         elevation: 0.0,
         actions: [
           ElevatedButton.icon(
-            onPressed: () {},
+            onPressed: () {
+              widget.toogleview();
+            },
             label: Text("Sign in"),
             icon: Icon(Icons.person),
           )
         ],
       ),
       body: Form(
+        key: _formKey,
         child: Padding(
           padding: EdgeInsets.all(20),
           child: Column(
@@ -36,15 +42,11 @@ class _RegisterState extends State<Register> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               TextFormField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  label: const Text("E mail"),
-                ),
-                onChanged: (newValue) {
+                decoration: textInputDecoration.copyWith(hintText: 'Email'),
+                validator: (value) => value!.isEmpty ? 'Enter an email' : null,
+                onChanged: (value) {
                   setState(() {
-                    _email = newValue;
+                    _email = value;
                   });
                 },
               ),
@@ -52,15 +54,13 @@ class _RegisterState extends State<Register> {
                 height: 20,
               ),
               TextFormField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  label: const Text("Password"),
-                ),
-                onChanged: (newValue) {
+                validator: (value) => value!.length < 6
+                    ? 'Enter password six charecter long'
+                    : null,
+                decoration: textInputDecoration.copyWith(hintText: 'Password'),
+                onChanged: (value) {
                   setState(() {
-                    _pass = newValue;
+                    _pass = value;
                   });
                 },
               ),
@@ -68,11 +68,26 @@ class _RegisterState extends State<Register> {
                 height: 20,
               ),
               ElevatedButton(
-                onPressed: () {},
                 child: const Text(
                   "Register",
                   style: TextStyle(color: Colors.yellow),
                 ),
+                onPressed: () async {
+                  if (_formKey.currentState!.validate()) {
+                    dynamic result =
+                        await _auth.signInWithEmailPass(_email, _pass);
+                    if (result == null) {
+                      setState(() {
+                        error = 'please enter valid input';
+                      });
+                    }
+                  }
+                },
+              ),
+              SizedBox(height: 12.0),
+              Text(
+                error,
+                style: TextStyle(color: Colors.red, fontSize: 14.0),
               )
             ],
           ),

@@ -1,5 +1,6 @@
 // import 'package:brew_crew/screen/authenticate/authenticate.dart';
 import 'package:brew_crew/services/auth.dart';
+import 'package:brew_crew/shared/constent_value.dart';
 import 'package:flutter/material.dart';
 
 class SignIn extends StatefulWidget {
@@ -12,6 +13,8 @@ class SignIn extends StatefulWidget {
 
 class _SignInState extends State<SignIn> {
   final AuthServices _auth = AuthServices();
+  final _formKey = GlobalKey<FormState>();
+  String error = '';
   String _email = "";
   String _pass = " ";
   @override
@@ -39,12 +42,8 @@ class _SignInState extends State<SignIn> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               TextFormField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  label: const Text("E mail"),
-                ),
+                decoration: textInputDecoration.copyWith(hintText: 'Password'),
+                validator: (value) => value!.isEmpty ? 'Enter an email' : null,
                 onChanged: (newValue) {
                   setState(() {
                     _email = newValue;
@@ -55,12 +54,10 @@ class _SignInState extends State<SignIn> {
                 height: 20,
               ),
               TextFormField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  label: const Text("Password"),
-                ),
+                decoration: textInputDecoration.copyWith(hintText: 'Password'),
+                validator: (value) => value!.length < 6
+                    ? 'Enter password six charecter long'
+                    : null,
                 onChanged: (newValue) {
                   setState(() {
                     _pass = newValue;
@@ -71,11 +68,26 @@ class _SignInState extends State<SignIn> {
                 height: 20,
               ),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () async {
+                  if (_formKey.currentState!.validate()) {
+                    dynamic result =
+                        await _auth.signInWithEmailPass(_email, _pass);
+                    if (result == null) {
+                      setState(() {
+                        error = 'please enter valid input';
+                      });
+                    }
+                  }
+                },
                 child: const Text(
                   "Sign in",
                   style: TextStyle(color: Colors.yellow),
                 ),
+              ),
+              SizedBox(height: 12.0),
+              Text(
+                error,
+                style: TextStyle(color: Colors.red, fontSize: 14.0),
               )
             ],
           ),

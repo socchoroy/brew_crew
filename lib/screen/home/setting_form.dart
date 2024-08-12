@@ -11,6 +11,7 @@ class SettingForm extends StatefulWidget {
 class _SettingFormState extends State<SettingForm> {
   final _formKey = GlobalKey<FormState>();
   final List<String> sugars = ['0', '1', '2', '3', '4'];
+  final List<int> strengths = [100, 200, 300, 400, 500, 600, 700, 800, 900];
 
   // form values
   String? _currentName;
@@ -25,6 +26,10 @@ class _SettingFormState extends State<SettingForm> {
           key: _formKey,
           child: Column(
             children: [
+              Text('Update Your Brew Settings'),
+              SizedBox(
+                height: 20,
+              ),
               TextFormField(
                 decoration: textInputDecoration,
                 validator: (value) =>
@@ -36,7 +41,7 @@ class _SettingFormState extends State<SettingForm> {
               SizedBox(
                 height: 20,
               ),
-              DropdownButton(
+              DropdownButtonFormField(
                 items: sugars
                     .map(
                       (e) => DropdownMenuItem(

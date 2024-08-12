@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:brew_crew/model/brew.dart';
 
 class Database {
-  Database({required this.uid});
+  Database(this.uid);
   final String uid;
   final CollectionReference brewCollection =
       FirebaseFirestore.instance.collection('brews');
@@ -14,19 +15,19 @@ class Database {
     });
   }
 
- List<Brew> _brewListFromSnapshot(QuerySnapshot snapshot) {
-    return snapshot.documents.map((doc){
-      //print(doc.data);
+  List<Brew> _brewListFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      //print(doc.data());
       return Brew(
-        name: doc.data['name'] ?? '',
-        strength: doc.data['strength'] ?? 0,
-        sugars: doc.data['sugars'] ?? '0'
+        name: (doc.data() as Map<String, dynamic>)['name'] ?? '',
+        strength: (doc.data() as Map<String, dynamic>)['strength'] ?? 0,
+        suger: (doc.data() as Map<String, dynamic>)['suger'] ?? '0',
       );
     }).toList();
   }
 
   // get brews stream
   Stream<List<Brew>> get brews {
-    return brewCollection.snapshots()
-      .map(_brewListFromSnapshot);
+    return brewCollection.snapshots().map(_brewListFromSnapshot);
   }
+}

@@ -8,7 +8,7 @@ class AuthServices {
   //sign in anonymously
 
   _userFromFirebaseUser(user) {
-    return user != null ? UserID(uid: user.id) : null;
+    return user != null ? UserID(user.id) : null;
   }
 
   //convert firebase user to normal user
@@ -40,7 +40,7 @@ class AuthServices {
 
       final user = result.user;
       // create a new document for the user with the uid
-      await Database(uid: user!.uid).updateUserData('0', 'new member', 100);
+      await Database(user!.uid).updateUserData('0', 'new member', 100);
       return _userFromFirebaseUser(user);
     } catch (e) {
       print(e.toString());

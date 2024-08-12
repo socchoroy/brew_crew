@@ -4,4 +4,4 @@ class Brew
   final String name;
   final String suger;
   final int strength;
-)
+}

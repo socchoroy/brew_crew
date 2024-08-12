@@ -52,6 +52,17 @@ class _SettingFormState extends State<SettingForm> {
               SizedBox(
                 height: 20,
               ),
+              Slider(
+                value: (_currentStrength ?? 100).toDouble(),
+                max: 900,
+                min: 100,
+                divisions: 8,
+                activeColor: Colors.brown[_currentStrength ?? 100],
+                inactiveColor: Colors.brown[_currentStrength ?? 100],
+                onChanged: (value) => setState(() {
+                  _currentStrength = value.round();
+                }),
+              ),
               ElevatedButton(
                 onPressed: () async {
                   print(_currentName);
